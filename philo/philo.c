@@ -1,33 +1,42 @@
 #include "philo.h"
 
-void	*all_routines(void *arg)
+void	*all_routines()
+{
+	printf("I'm a philosopher and everithyng is working.\n");
+	return (NULL);
+}
+
+/*t_philo		init_philo_struct()
 {
 
-}
+}*/
 
 int	main(int argc, char **argv)
 {
-	if (argc == 4 || argc == 5)
+	(void)argc;
+	if (argc == 5 || argc == 6)
 	{
 		int			i = 0;
 		int			philo_nbr = ft_atoi(argv[1]);
 		pthread_t	*threads;
 		pthread_mutex_t     mutex;
 		pthread_mutex_init(&mutex, NULL);
-		while (threads < philo_nbr)
+		while (i < philo_nbr)
 		{
-			if ((pthread_create(&threads[i], NULL, &all_routines, NULL)) != 0)
+			//Antes de criar, preciso alocar a quantidade de filósofos
+			if ((pthread_create(threads + i, NULL, &all_routines, NULL)) != 0)
 			{
 				perror("Failed to create thread");
 				return (-1);
 			}
 			i++;
 		}
-		while (threads < philo_nbr)
+		i = 0;
+		while (i < philo_nbr)
 		{
-			if ((pthread_create(threads, NULL, &all_routines, NULL)) != 0)
+			if (pthread_join(threads[i], NULL) != 0)
 			{
-				perror("Failed to create thread");
+				perror("Failed to terminate thread");
 				return (-1);
 			}
 			i++;
@@ -39,5 +48,9 @@ int	main(int argc, char **argv)
 		printf("Error\nInvalid number of arguments");
 		return(-1);
 	}
+	/*
+	if (finished/error)):
+	clean + free.
+	*/
 	return (0);
 }
