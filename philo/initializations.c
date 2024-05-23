@@ -18,8 +18,10 @@ int     init_table(t_table *table, int argc, char **argv)
     table->m_philo_last_meal = ft_calloc(sizeof(pthread_mutex_t), (table->nbr_philos + 1));
     table->m_fork_state = ft_calloc(sizeof(pthread_mutex_t), (table->nbr_philos + 1));
     table->threads = ft_calloc(sizeof(pthread_t), (table->nbr_philos + 1));
+    table->philosophers = ft_calloc(sizeof(struct s_philo *), table->nbr_philos + 1);
     if (!table->philo_last_meal || !table->fork_state 
-        || !table->m_philo_last_meal || !table->m_fork_state || !table->threads)
+        || !table->m_philo_last_meal || !table->m_fork_state
+        || !table->threads || !table->philosophers)
             return (1);
     while (i < table->nbr_philos)
     {

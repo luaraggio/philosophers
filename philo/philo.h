@@ -37,6 +37,8 @@ typedef struct	s_philo
 }   t_philo;
 
 int             ft_trylock(pthread_mutex_t *m_fork_state, int *fork_state);
+int             init_table(t_table *table, int argc, char **argv);
+struct s_philo  *create_philo(int id, t_table *table);
 void            *ft_calloc(size_t nmemb, size_t size);
 void            ft_bzero(void *s, size_t n);
 int             ft_atoi(char *str);
