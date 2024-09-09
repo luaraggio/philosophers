@@ -5,12 +5,13 @@ int     init_table(t_table *table, int argc, char **argv)
     int     i;
 
     i = 0;
-    table->nbr_philos = ft_atoi(argv[1]);
-    table->die_time = ft_atoi(argv[2]);
-    table->eat_time = ft_atoi(argv[3]);
-    table->sleep_time = ft_atoi(argv[4]);
+    table->nbr_philos = ft_atol(argv[1]);
+    table->end_simulation = false;
+    table->die_time = ft_atol(argv[2]) * 1e3;
+    table->eat_time = ft_atol(argv[3]) * 1e3;
+    table->sleep_time = ft_atol(argv[4]) * 1e3;
     if (argc == 6)
-        table->max_eat = ft_atoi(argv[5]);
+        table->max_eat = ft_atol(argv[5]);
     else
         table->max_eat = -1;
     table->philo_last_meal = ft_calloc(sizeof(long), (table->nbr_philos + 1));

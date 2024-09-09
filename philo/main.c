@@ -1,5 +1,11 @@
 #include "philo.h"
 
+/*
+input:./philos  nbr_of_philos    time_to_die    time_to_eat    time_to_sleep   nbr_of_meals
+
+example: ./philos 5 800 200 200 [5]
+*/
+
 void    *teste(void *ptr)
 {
     t_philo *philo;
@@ -9,22 +15,43 @@ void    *teste(void *ptr)
     return (NULL);
 }
 
+/*void    *all_routines(void *arg)
+{
+    //comer
+    if (eat_routine() != 0)
+        error;
+    //dormir
+    if (sleep_routine() != 0)
+        error;
+    //pensar
+    if (think_routine() != 0)
+        error;
+    //morrer
+}*/
+
 int     main(int argc, char **argv)
 {
     t_table     table;
     int         i;
-    
+
     i = 0;
-    init_table(&table, argc, argv);
-    while(i < table.nbr_philos)
+    if (check_args(argc, argv) == 0)
     {
-        pthread_create(&table.threads[i], NULL, &teste, table.philosophers[i]);
-        i++;
+        init_table(&table, argc, argv);
+        while(i < table.nbr_philos)
+        {
+            pthread_create(&table.threads[i], NULL, &teste, table.philosophers[i]);
+            i++;
+        }
+        i = -1;
+        while(++i < table.nbr_philos)
+            pthread_join(table.threads[i], NULL);
+    //dinner_start(&table);
     }
-    i = 0;
-    while(i < table.nbr_philos)
+    else
     {
-        pthread_join(table.threads[i], NULL);
-        i++;
+        //free(no que foi mallocado);
+        exit(EXIT_FAILURE);
     }
+    //Limpar tudo ao final
 }

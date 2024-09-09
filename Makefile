@@ -2,9 +2,10 @@ NAME = philos
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -lpthread -g
 
-SRCS =	./philo/functions.c \
+SRCS =	./philo/philo_utils.c \
+		./philo/libft_utils.c \
 		./philo/main.c \
-		./philo/utils.c \
+		./philo/validations.c \
 		./philo/initializations.c
 
 .PHONY:
