@@ -1,9 +1,13 @@
 #include "philo.h"
 
 /*
-input:./philos  nbr_of_philos    time_to_die    time_to_eat    time_to_sleep   nbr_of_meals
+input:
 
-example: ./philos 5 800 200 200 [5]
+./philos  nbr_of_philos    time_to_die    time_to_eat    time_to_sleep   nbr_of_meals
+
+example:
+
+ ./philos 5 800 200 200 [5]
 */
 
 void    *teste(void *ptr)
@@ -15,41 +19,28 @@ void    *teste(void *ptr)
     return (NULL);
 }
 
-/*void    *all_routines(void *arg)
-{
-    //comer
-    if (eat_routine() != 0)
-        error;
-    //dormir
-    if (sleep_routine() != 0)
-        error;
-    //pensar
-    if (think_routine() != 0)
-        error;
-    //morrer
-}*/
-
 int     main(int argc, char **argv)
 {
-    t_table     table;
+    if (check_args(argc, argv) == 0)
+    {
+    //start_program()!!!
+        t_table     table;
     int         i;
 
     i = 0;
-    if (check_args(argc, argv) == 0)
+    init_table(&table, argc, argv);
+    while(i < table.nbr_philos)
     {
-        init_table(&table, argc, argv);
-        while(i < table.nbr_philos)
-        {
-            pthread_create(&table.threads[i], NULL, &teste, table.philosophers[i]);
-            i++;
-        }
-        i = -1;
-        while(++i < table.nbr_philos)
-            pthread_join(table.threads[i], NULL);
-    //dinner_start(&table);
+        pthread_create(&table.threads[i], NULL, &teste, table.philosophers[i]);
+        i++;
+    }
+    i = -1;
+    while(++i < table.nbr_philos)
+        pthread_join(table.threads[i], NULL);
     }
     else
     {
+    //end_program()!!!!
         //free(no que foi mallocado);
         exit(EXIT_FAILURE);
     }
