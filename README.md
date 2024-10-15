@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Philosophers - A Synchronization Problem</h1>
+<h1>Philosophers - A Synchronization Problem 🚫 </h1>
 
 <p>
     Welcome to the <strong>Philosophers Simulation</strong> project. This is a classic concurrency problem solved using <strong>threads</strong> and <strong>mutexes</strong> in the mandatory part and <strong>processes</strong> and <strong>semaphores</strong> in the bonus part. The goal is to simulate a group of philosophers who alternate between eating, thinking, and sleeping while competing for limited resources (forks) at a table.
