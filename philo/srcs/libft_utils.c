@@ -1,9 +1,21 @@
-#include "philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/15 02:17:19 by lraggio           #+#    #+#             */
+/*   Updated: 2024/10/15 02:32:40 by lraggio          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int     ft_atoi(char *str)
+#include "../include/philo.h"
+
+int	ft_atoi(char *str)
 {
 	unsigned int	result;
-	int	i;
+	int				i;
 
 	i = 0;
 	result = 0;
@@ -46,8 +58,8 @@ long	ft_atol(const char *str)
 	value = 0;
 	i = 0;
 	sign = (is_negative(str));
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
-		|| str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\r' || str[i] == '\f')
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
@@ -63,7 +75,7 @@ void	ft_bzero(void *s, size_t n)
 {
 	char	*a;
 
-	a = (char *) s;
+	a = (char *)s;
 	while (n > 0)
 	{
 		a[n - 1] = '\0';
@@ -73,7 +85,7 @@ void	ft_bzero(void *s, size_t n)
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*str;
+	char *str;
 
 	if ((nmemb) && (size * nmemb > 0) && ((nmemb * size) / nmemb != size))
 		return (NULL);

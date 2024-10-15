@@ -2,21 +2,42 @@ NAME = philosophers
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -lpthread -g
 
-SRCS =	./philo/philo_utils.c \
-		./philo/libft_utils.c \
-		./philo/main.c \
-		./philo/validations.c \
-		./philo/initializations.c \
-		.philo/routines.c
+# Colors
+RESET=\033[0m
+PURPLE = \033[35m
+GREEN=\033[32m
+PINK=\033[35m
+RED=\033[31m
+BLUE=\033[34m
 
-$(NAME):	$(SRCS)
-			$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+SRCS =	./philo/srcs/main.c \
+		./philo/srcs/philo_utils.c \
+		./philo/srcs/libft_utils.c \
+		./philo/srcs/struct_init.c \
+		./philo/srcs/is_valid_input.c \
+
+OBJS = ${SRCS:.c=.o}
+
+%.o: %.c
+	@$(CC) $(FLAGS) -c $< -o $@
 
 all: $(NAME)
+	@echo "$(PINK) 📖 Philo ready to be used!$(RESET)"
+
+$(NAME):	$(OBJS)
+			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 clean:
-	rm -f $(NAME)
-	rm -rf $(NAME).dSYM
+	@rm -f $(OBJS)
+	@echo "$(BLUE) 📤 Objects deleted$(RESET)"
 
-re: clean all
+fclean:
+		@rm -f $(NAME)
+		@rm -f $(OBJS)
+		@echo "$(BLUE) 🧼 All cleaned$(RESET)"
+
+re: fclean all
+
+val: re
+	valgrind  --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME)
 

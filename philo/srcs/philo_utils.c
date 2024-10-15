@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routines.c                                         :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/09/09 18:11:17 by lraggio          ###   ########.fr       */
+/*   Created: 2024/10/15 02:27:59 by lraggio           #+#    #+#             */
+/*   Updated: 2024/10/15 02:32:46 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
-/*void    *all_routines(void *arg)
+int	ft_trylock(pthread_mutex_t *m_fork_state, int *fork_state)
 {
-    //comer
-    if (eat_routine() != 0)
-        error;
-    //dormir
-    if (sleep_routine() != 0)
-        error;
-    //pensar
-    if (think_routine() != 0)
-        error;
-    //morrer
-}*/
+	pthread_mutex_lock(m_fork_state);
+	if (*fork_state == 0)
+	{
+		*fork_state = 1;
+		pthread_mutex_unlock(m_fork_state);
+		return (0);
+	}
+	pthread_mutex_unlock(m_fork_state);
+	return (1);
+}
+
+long unsigned	get_time(void)
+{
+	return (1);
+}
