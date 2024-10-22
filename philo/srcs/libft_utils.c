@@ -6,13 +6,13 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:19 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/15 02:32:40 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/22 13:48:26 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	ft_atoi(char *str)
+int	my_atoi(char *str)
 {
 	unsigned int	result;
 	int				i;
@@ -49,7 +49,7 @@ long	is_negative(const char *str)
 	return (sign);
 }
 
-long	ft_atol(const char *str)
+long	my_atol(const char *str)
 {
 	long	value;
 	long	i;
@@ -71,7 +71,7 @@ long	ft_atol(const char *str)
 	return (value * sign);
 }
 
-void	ft_bzero(void *s, size_t n)
+void	my_bzero(void *s, size_t n)
 {
 	char	*a;
 
@@ -83,15 +83,15 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*my_calloc(size_t nmemb, size_t size)
 {
-	char *str;
+	char	*str;
 
 	if ((nmemb) && (size * nmemb > 0) && ((nmemb * size) / nmemb != size))
 		return (NULL);
 	str = malloc(nmemb * size);
 	if (!str)
 		return (NULL);
-	ft_bzero(str, (nmemb * size));
+	my_bzero(str, (nmemb * size));
 	return (str);
 }

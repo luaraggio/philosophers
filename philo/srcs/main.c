@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:30:22 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/15 02:31:14 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/22 17:12:58 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ input:
 
 ./philos  nbr_of_philos    time_to_die    time_to_eat    time_to_sleep   nbr_of_meals
 
-example:
+ex.
 
- ./philos 5 800 200 200 [5]
+ ./philos 3 800 200 200 5
 */
 
 void	*teste(void *ptr)
@@ -40,31 +40,59 @@ void	*teste(void *ptr)
 	return (NULL);
 }
 
+void	start_program(t_table *table, int i)
+{
+	while (i < table->nbr_philos)
+	{
+		pthread_create(&table->threads[i], NULL, &teste,
+			table->philosophers[i]);
+		i++;
+	}
+	return ;
+}
+
+/*
+ * 	A função final_clear é responsável por dar free em tudo que foi alocado.
+ * Primeiro, destrói os mutexes. Em seguida, libera a struct s_philo usando
+ * um loop que percorre toda a matriz de filósofos. Por fim, libera os arrays
+ * da struct s_table.
+*/
+
+void	final_clear(t_table *table)
+{
+	int	i;
+
+	i = -1;
+	while (++i < table->nbr_philos)
+	{
+		pthread_mutex_destroy(table->m_philo_last_meal);
+		pthread_mutex_destroy(table->m_fork_state);
+	}
+	i = -1;
+	while (++i < table->nbr_philos)
+		free(table->philosophers[i]);
+	free(table->philo_last_meal);
+	free(table->fork_state);
+	free(table->m_philo_last_meal);
+	free(table->m_fork_state);
+	free(table->threads);
+	free(table->philosophers);
+	return ;
+}
+
 int	main(int argc, char **argv)
 {
 		t_table table;
 		int i;
 
-	if (check_args(argc, argv) == 0)
-	{
-		// start_program()!!!
-		i = 0;
-		init_table(&table, argc, argv);
-		while (i < table.nbr_philos)
-		{
-			pthread_create(&table.threads[i], NULL, &teste,
-				table.philosophers[i]);
-			i++;
-		}
-		i = -1;
-		while (++i < table.nbr_philos)
-			pthread_join(table.threads[i], NULL);
-	}
-	else
-	{
-		// end_program()!!!!
-		// free(no que foi mallocado);
+	if (check_args(argc, argv))
 		exit(EXIT_FAILURE);
-	}
-	// Limpar tudo ao final
+	i = 0;
+	init_table(&table, argc, argv);
+	start_program(&table, i);
+	i = -1;
+	while (++i < table.nbr_philos)
+		pthread_join(table.threads[i], NULL); //espera as threads terminarem
+	final_clear(&table);
+	return (0);
 }

@@ -1,4 +1,4 @@
-NAME = philosophers
+NAME = philos
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -lpthread -g
 
@@ -13,8 +13,9 @@ BLUE=\033[34m
 SRCS =	./philo/srcs/main.c \
 		./philo/srcs/philo_utils.c \
 		./philo/srcs/libft_utils.c \
-		./philo/srcs/struct_init.c \
-		./philo/srcs/is_valid_input.c \
+		./philo/srcs/structs.c \
+		./philo/srcs/check_input.c \
+		./philo/srcs/print_error.c
 
 OBJS = ${SRCS:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:17 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/15 02:32:51 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/22 16:54:56 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@ int	init_table(t_table *table, int argc, char **argv)
 	int	i;
 
 	i = 0;
-	table->nbr_philos = ft_atol(argv[1]);
-	table->end_simulation = false;
-	table->die_time = ft_atol(argv[2]) * 1e3;
-	table->eat_time = ft_atol(argv[3]) * 1e3;
-	table->sleep_time = ft_atol(argv[4]) * 1e3;
+	table->nbr_philos = my_atol(argv[1]);
+	table->die_time = my_atol(argv[2]) * 1e3;
+	table->eat_time = my_atol(argv[3]) * 1e3;
+	table->sleep_time = my_atol(argv[4]) * 1e3;
 	if (argc == 6)
-		table->max_eat = ft_atol(argv[5]);
+		table->max_eat = my_atol(argv[5]);
 	else
 		table->max_eat = -1;
-	table->philo_last_meal = ft_calloc(sizeof(long), (table->nbr_philos + 1));
-	table->fork_state = ft_calloc(sizeof(int), (table->nbr_philos + 1));
-	table->m_philo_last_meal = ft_calloc(sizeof(pthread_mutex_t),
+	table->philo_last_meal = my_calloc(sizeof(long), (table->nbr_philos + 1));
+	table->fork_state = my_calloc(sizeof(int), (table->nbr_philos + 1));
+	table->m_philo_last_meal = my_calloc(sizeof(pthread_mutex_t),
 			(table->nbr_philos + 1));
-	table->m_fork_state = ft_calloc(sizeof(pthread_mutex_t), (table->nbr_philos
+	table->m_fork_state = my_calloc(sizeof(pthread_mutex_t), (table->nbr_philos
 				+ 1));
-	table->threads = ft_calloc(sizeof(pthread_t), (table->nbr_philos + 1));
-	table->philosophers = ft_calloc(sizeof(struct s_philo *), table->nbr_philos
+	table->threads = my_calloc(sizeof(pthread_t), (table->nbr_philos + 1));
+	table->philosophers = my_calloc(sizeof(struct s_philo *), table->nbr_philos
 			+ 1);
 	if (!table->philo_last_meal || !table->fork_state
 		|| !table->m_philo_last_meal || !table->m_fork_state || !table->threads
