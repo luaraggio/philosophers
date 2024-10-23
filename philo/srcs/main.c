@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:30:22 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/22 17:12:58 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/23 16:23:06 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	start_program(t_table *table, int i)
 {
 	while (i < table->nbr_philos)
 	{
-		pthread_create(&table->threads[i], NULL, &teste,
+		pthread_create(&table->threads[i], NULL, &dinner_loop,
 			table->philosophers[i]);
 		i++;
 	}
@@ -80,6 +80,11 @@ void	final_clear(t_table *table)
 	return ;
 }
 
+/*
+pthread_join: waits for the thread identified by thread to terminate. (If
+that thread has already terminated, pthread_join() returns immediately.
+*/
+
 int	main(int argc, char **argv)
 {
 		t_table table;
@@ -92,7 +97,7 @@ int	main(int argc, char **argv)
 	start_program(&table, i);
 	i = -1;
 	while (++i < table.nbr_philos)
-		pthread_join(table.threads[i], NULL); //espera as threads terminarem
+		pthread_join(table.threads[i], NULL);
 	final_clear(&table);
 	return (0);
 }
