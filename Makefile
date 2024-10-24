@@ -11,11 +11,14 @@ RED=\033[31m
 BLUE=\033[34m
 
 SRCS =	./philo/srcs/main.c \
-		./philo/srcs/philo_utils.c \
-		./philo/srcs/libft_utils.c \
-		./philo/srcs/structs.c \
 		./philo/srcs/check_input.c \
-		./philo/srcs/print_error.c
+		./philo/srcs/clear.c \
+		./philo/srcs/libft_utils.c \
+		./philo/srcs/mutex.c \
+		./philo/srcs/print_msgs.c \
+		./philo/srcs/routines.c \
+		./philo/srcs/structs.c \
+		./philo/srcs/tests.c
 
 OBJS = ${SRCS:.c=.o}
 
