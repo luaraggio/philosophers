@@ -1,45 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routines.c                                         :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/23 23:31:43 by lraggio          ###   ########.fr       */
+/*   Created: 2024/10/25 18:29:55 by lraggio           #+#    #+#             */
+/*   Updated: 2024/10/25 20:44:29 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-/*is_philo_dead(t_table *control)
+//inicializar start time!!!
+
+long	get_current_time(void)
 {
+	struct timeval	time;
 
-}*/
-
-/*has_finished_eaten_times(t_table *control)
-{
-
-}*/
-
-void	*end_program(t_table *control)
-{
-	if (is_philo_dead(control))
-	{
-		printf("Um filósofo morreu!\n");
-		return (1);
-	}
-	if (has_finished_eaten_times(control))
-	{
-		printf("Todos os filósofos comeram o número de vezes necessário!\n");
-		return (1);
-	}
-	return (0);
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1e3) + (time.tv_usec / 1e3));
 }
 
-void    *all_routines(void *ptr)
+int my_usleep(long time)
 {
-	//eat_routine
-	//sleep_routine
-	//think_routine
+    long start_time;
+
+    start_time = get_current_time();
+    while (get_current_time() - start_time < time)
+        usleep(100);
+    return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:21:01 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/22 17:05:33 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/25 21:27:02 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/time.h>
+
+# define GREEN "\033[0;32m"
+# define RESET "\033[0m"
+# define RED "\033[31m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define PINK "\033[35m"
 
 typedef struct s_table // control scructure
 {
@@ -54,19 +62,26 @@ typedef struct s_philo // philosophers structure
 	pthread_mutex_t *m_r_fork;
 }				t_philo;
 
+struct s_philo	*create_philo(int id, t_table *table);
+
+int				my_usleep(long time);
 int				my_trylock(pthread_mutex_t *m_fork_state, int *fork_state);
 int				init_table(t_table *table, int argc, char **argv);
-struct s_philo	*create_philo(int id, t_table *table);
-long unsigned	get_time(void);
-
-void			*my_calloc(size_t nmemb, size_t size);
-void			my_bzero(void *s, size_t n);
-void			my_putchar_fd(char c, int fd);
 int				my_atoi(char *str);
 int				is_in_range(char **argv);
 int				is_nbr(char **argv);
 int				check_args(int argc, char **argv);
 int				is_digit(int c);
+int				eat_routine(t_philo *philo);
+int				sleep_routine(t_philo *philo);
+int				think_routine(t_philo *philo);
+
+void			*run_program(void *ptr);
+void			*my_calloc(size_t nmemb, size_t size);
+void			my_bzero(void *s, size_t n);
+void			my_putchar_fd(char c, int fd);
+
+long			get_current_time(void);
 long			is_negative(const char *str);
 long			my_atol(const char *str);
 

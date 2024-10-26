@@ -16,9 +16,9 @@ SRCS =	./philo/srcs/main.c \
 		./philo/srcs/libft_utils.c \
 		./philo/srcs/mutex.c \
 		./philo/srcs/print_msgs.c \
-		./philo/srcs/routines.c \
-		./philo/srcs/structs.c \
-		./philo/srcs/tests.c
+		./philo/srcs/philo_routines.c \
+		./philo/srcs/init_structs.c \
+		./philo/srcs/time.c \
 
 OBJS = ${SRCS:.c=.o}
 
