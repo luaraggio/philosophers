@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 23:10:17 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/25 20:22:46 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/27 14:54:37 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,29 @@ void	free_matrix(char **matrix)
  * da struct s_table.
  */
 
-void	destroy_mutexes(t_table *table)
+/*void	destroy_philo_mutexes(t_philo *table)
+{
+}*/
+
+/*void	destroy_table_mutexes(t_table *table)
 {
 	int	i;
 
 	i = -1;
 	while (++i < table->nbr_philos)
 	{
-		pthread_mutex_destroy(table->m_philo_last_meal);
+		pthread_mutex_destroy(&table->m_philo_last_meal[i]);
 		pthread_mutex_destroy(table->m_fork_state);
 	}
-}
+	pthread_mutex_destroy(&table->m_die_flag);
+	return ;
+}*/
 
 void	final_clear(t_table *table)
 {
 	int	i;
 
 	i = -1;
-	destroy_mutexes(table);
 	while (++i < table->nbr_philos)
 		free(table->philosophers[i]);
 	free(table->philosophers);

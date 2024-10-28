@@ -6,108 +6,106 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/25 23:01:09 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/27 23:37:48 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-/*
-	if (end_program(control))
-		//os filósofos não devem verificar a própria morte!!
-	{
-		printf("Loop foi interrompido por morte/ fim do número de refeições!\n");
-		break ;
-	}
-*/
-
-void	dinner_config(t_philo *philo)
-{
-	if (philo->philo_id % 2 == 0)
-	{
-		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
-			//ver se a simulação deve acabar ou não
-		printf(PINK"philo %d has taken left fork\n"RESET, philo->philo_id);
-		my_trylock(philo->m_r_fork, philo->r_fork);
-		printf(PINK"philo %d has taken right fork\n"RESET, philo->philo_id);
-		printf("Filósofo par pegou os dois garfos\n");
-	}
-	else
-	{
-		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
-			//ver se a simulação deve acabar ou não
-		my_trylock(philo->m_l_fork, philo->l_fork);
-		printf(PINK"philo %d has taken left fork\n"RESET, philo->philo_id);
-		my_trylock(philo->m_r_fork, philo->r_fork);
-		printf(PINK"philo %d has taken right fork\n"RESET, philo->philo_id);
-		printf("Filósofo ímpar pegou os dois garfos\n");
-	}
-}
 
 void	*run_program(void *ptr)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr;
+	update_last_meal(philo);
 	while (42)
 	{
-		if (eat_routine(philo) != 0)
+		if (eat_routine(philo) == STOP)
 			break ;
-		if (think_routine(philo) != 0) //tentando comer
+		if (think_routine(philo) == STOP)
 			break ;
-		if (sleep_routine(philo) != 0) //dormir pelas metades p/ verificar se morreu nesse meio tempo
+		if (sleep_routine(philo) == STOP)
 			break ;
 	}
 	return (NULL);
 }
 
-int	eat_routine(t_philo *philo)
+void	return_forks(t_philo *philo)
+{
+	pthread_mutex_lock(philo->m_l_fork);
+	*philo->l_fork = 0;
+	pthread_mutex_unlock(philo->m_l_fork);
+	pthread_mutex_lock(philo->m_r_fork);
+	*philo->r_fork = 0;
+	pthread_mutex_unlock(philo->m_r_fork);
+}
+
+void	update_last_meal(t_philo *philo) // Atualiza QUANDO começa a comer, não depois que comeu
+{
+	pthread_mutex_lock(philo->m_last_meal);
+	*philo->last_meal = get_current_time(MICRO);
+	pthread_mutex_unlock(philo->m_last_meal);
+}
+
+t_sim_status	eat_routine(t_philo *philo)
 {
 	if (philo->times_eaten == philo->max_eat)
-		return (1);
-	dinner_config(philo);
-	philo->eat_time = get_current_time();
-	printf(GREEN"philo %d is eating\n" RESET, philo->philo_id); // comer
+		return (STOP);
+	if (dinner_config(philo) == STOP)
+		return (STOP);
+	update_last_meal(philo);
+	printf(GREEN "philo %d is eating\n" RESET, philo->philo_id);
 	philo->times_eaten++;
-	my_usleep(philo->eat_time);
-	return (0);
+	return_forks(philo);
+	my_usleep(philo, philo->eat_time);
+	return (CONTINUE);
 }
 
 int	sleep_routine(t_philo *philo)
 {
-	philo->sleep_time = get_current_time();
-	printf(BLUE"philo %d is sleeping\n" RESET, philo->philo_id); // dormir
-	my_usleep(philo->sleep_time);
+	printf(BLUE "philo %d is sleeping\n" RESET, philo->philo_id);
+	my_usleep(philo, philo->sleep_time);
 	return (0);
 }
 
 int	think_routine(t_philo *philo)
 {
-	printf(YELLOW"philo %d is thinking\n" RESET, philo->philo_id); // pensar
+	printf(YELLOW "philo %d is thinking\n" RESET, philo->philo_id);
 	return (0);
 }
 
-/*must_die_or_not(t_table *control)
+int	dinner_config(t_philo *philo)
 {
-	printf(RED"philo %d is DEAD.\n"RESET, philo->philo_id); // morreu
-}*/
-
-/*has_finished_eaten_times(t_table *control)
-{
-
-}*/
-
-/*void	*end_program(t_table *control)
-{
-	if (must_die_or_not(control))
+	if (philo->philo_id % 2 == 0)
+	// filósofos pares pegam o garfo direito primeiro
 	{
-		printf("Um filósofo morreu!\n");
-		return (1);
+		while (my_trylock(philo->m_r_fork, philo->r_fork) != 0)
+		{
+			if (check_simulation_status(philo) == STOP)
+				return (STOP);
+		}
+		printf(PINK "philo %d has taken right fork\n" RESET, philo->philo_id);
+		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
+		{
+			if (check_simulation_status(philo) == STOP)
+				return (STOP);
+		}
+		printf(PINK "philo %d has taken left fork\n" RESET, philo->philo_id);
 	}
-	if (has_finished_eaten_times(control))
+	else // filósofos ímpares pegam o garfo esquerdo primeiro
 	{
-		printf("Todos os filósofos comeram o número de vezes necessário!\n");
-		return (1);
+		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
+		{
+			if (check_simulation_status(philo) == STOP)
+				return (STOP);
+		}
+		printf(PINK "philo %d has taken left fork\n" RESET, philo->philo_id);
+		while (my_trylock(philo->m_r_fork, philo->r_fork) != 0)
+		{
+			if (check_simulation_status(philo) == STOP)
+				return (STOP);
+		}
+		printf(PINK "philo %d has taken right fork\n" RESET, philo->philo_id);
 	}
 	return (0);
-}*/
+}

@@ -1,6 +1,6 @@
 NAME = philos
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lpthread -g
+CFLAGS = -g -Wall -Wextra -Werror -lpthread
 
 # Colors
 RESET=\033[0m
@@ -13,12 +13,13 @@ BLUE=\033[34m
 SRCS =	./philo/srcs/main.c \
 		./philo/srcs/check_input.c \
 		./philo/srcs/clear.c \
+		./philo/srcs/init_structs.c \
 		./philo/srcs/libft_utils.c \
 		./philo/srcs/mutex.c \
 		./philo/srcs/print_msgs.c \
 		./philo/srcs/philo_routines.c \
-		./philo/srcs/init_structs.c \
 		./philo/srcs/time.c \
+		./philo/srcs/status.c \
 
 OBJS = ${SRCS:.c=.o}
 
@@ -29,7 +30,7 @@ all: $(NAME)
 	@echo "$(PINK) 📖 Philo ready to be used!$(RESET)"
 
 $(NAME):	$(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+			@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)
@@ -41,6 +42,9 @@ fclean:
 		@echo "$(BLUE) 🧼 All cleaned$(RESET)"
 
 re: fclean all
+
+t: all
+	./$(NAME) 1 10 5 5
 
 val: re
 	valgrind  --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME)

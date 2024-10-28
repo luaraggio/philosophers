@@ -6,29 +6,32 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:29:55 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/25 20:44:29 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/27 18:38:46 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-//inicializar start time!!!
-
-long	get_current_time(void)
+long	get_current_time(t_time_precision precision)
 {
 	struct timeval	time;
+	long			current_time_in_micro;
 
 	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1e3) + (time.tv_usec / 1e3));
+	current_time_in_micro = time.tv_sec * 1e6 + time.tv_usec;
+	return (current_time_in_micro / precision);
 }
 
-int my_usleep(long time)
+int	my_usleep(t_philo *philo, long time)
 {
-    long start_time;
+	long	end;
 
-    start_time = get_current_time();
-    while (get_current_time() - start_time < time)
-        usleep(100);
-    return (0);
+	end = get_current_time(MICRO) + time;
+	while (end > get_current_time(MILI))
+	{
+		if (check_simulation_status(philo) == STOP) //checa se a simulação tem que acabar
+			return (STOP);
+	}
+	usleep(100);
+	return (0);
 }
-
