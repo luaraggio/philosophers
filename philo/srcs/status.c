@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:55:37 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 15:37:50 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 15:41:19 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	observer(t_table *control)
 	all_full = 0;
 	while (42)
 	{
-		while(i < control->nbr_philos)
+		while (i < control->nbr_philos)
 		{
 			if (should_die_or_not(control, i) != 0)
 			{
@@ -108,13 +108,11 @@ int	observer(t_table *control)
 		}
 		all_full = 1;
 		i = 0;
-		while(i < control->nbr_philos)
+		while (i < control->nbr_philos)
 		{
 			pthread_mutex_lock(&control->m_times_eaten[i]);
 			if (control->times_eaten[i] < control->max_eat)
-			{
 				all_full = 0;
-			}
 			pthread_mutex_unlock(&control->m_times_eaten[i]);
 			i++;
 		}
