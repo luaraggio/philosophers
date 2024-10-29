@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:21:01 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/27 18:58:59 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 02:13:57 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int				my_trylock(pthread_mutex_t *m_fork_state, int *fork_state);
 
 // ---------------- Philo Routines -------------
 void			*run_program(void *ptr);
-int				eat_routine(t_philo *philo);
+t_sim_status	eat_routine(t_philo *philo);
 int				sleep_routine(t_philo *philo);
 int				think_routine(t_philo *philo);
 int				dinner_config(t_philo *philo);
@@ -134,10 +134,11 @@ void			print_error(char *str);
 
 // ---------------- Status ---------------------
 t_sim_status	check_simulation_status(t_philo *philo);
-int				should_die(t_table *control, int i);
-int				observer(t_table *control);
+int				should_die_or_not(t_table *control, int i);
+void			*observer(void *arg);
+// int				observer(t_table *control);
 // ---------------- Time -----------------------
-int				my_usleep(t_philo *philo, long time);
+int my_usleep(t_philo *philo, long time);
 long			get_current_time(t_time_precision precision);
 
 #endif

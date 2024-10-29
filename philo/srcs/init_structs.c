@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:17 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/27 18:52:02 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 01:07:09 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
  */
 
-int	init_table_mutexes(t_table *table)
+int	init_mutexes(t_table *table)
 {
 	int	i;
 
@@ -28,13 +28,15 @@ int	init_table_mutexes(t_table *table)
 	while (++i < table->nbr_philos)
 	{
 		if (pthread_mutex_init(&table->m_philo_last_meal[i], NULL) != 0)
-			return (1);
+			return (ERROR);
 		if (pthread_mutex_init(table->m_fork_state, NULL) != 0)
-			return (1);
+			return (ERROR);
+		/*if (pthread_mutex_init(&table->philosophers[i]->m_times_eaten, NULL) != 0)
+			return (ERROR);*/
 	}
 	if (pthread_mutex_init(&table->m_die_flag, NULL) != 0)
-		return (1);
-	return (0);
+		return (ERROR);
+	return (NO_ERROR);
 }
 
 int	init_table(t_table *table, int argc, char **argv)
@@ -64,7 +66,7 @@ int	init_table(t_table *table, int argc, char **argv)
 		|| !table->m_philo_last_meal || !table->m_fork_state || !table->threads
 		|| !table->philosophers)
 		return (1);
-	init_table_mutexes(table);
+	init_mutexes(table);
 	while (++i < table->nbr_philos)
 	{
 		table->philosophers[i] = create_philo(i + 1, table);

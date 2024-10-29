@@ -12,11 +12,9 @@ BLUE=\033[34m
 
 SRCS =	./philo/srcs/main.c \
 		./philo/srcs/check_input.c \
-		./philo/srcs/clear.c \
 		./philo/srcs/init_structs.c \
 		./philo/srcs/libft_utils.c \
 		./philo/srcs/mutex.c \
-		./philo/srcs/print_msgs.c \
 		./philo/srcs/philo_routines.c \
 		./philo/srcs/time.c \
 		./philo/srcs/status.c \
@@ -45,6 +43,8 @@ re: fclean all
 
 t: all
 	./$(NAME) 1 10 5 5
+	./$(NAME) 5 800 200 200
+
 
 val: re
 	valgrind  --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME)

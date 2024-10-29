@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:29:55 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/27 18:38:46 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 02:04:39 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	my_usleep(t_philo *philo, long time)
 	long	end;
 
 	end = get_current_time(MICRO) + time;
-	while (end > get_current_time(MILI))
+	while (end > get_current_time(MICRO))
 	{
+		usleep(100);
 		if (check_simulation_status(philo) == STOP) //checa se a simulação tem que acabar
 			return (STOP);
 	}
-	usleep(100);
-	return (0);
+	return (CONTINUE);
 }

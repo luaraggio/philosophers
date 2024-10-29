@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:55:37 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/27 19:00:30 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 02:28:57 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@ int	should_die_or_not(t_table *control, int i)
 	return (0);
 }
 
+/*void	*observer(void *arg)
+{
+	t_table	*table = (t_table *)arg;
+	int		i;
+
+	while (1)
+	{
+		i = 0;
+		while (i < table->nbr_philos)
+		{
+			if (should_die_or_not(table, i))
+			{
+				pthread_mutex_lock(&table->m_die_flag);
+				table->die_flag = STOP;  // Sinaliza o fim da simulação
+				pthread_mutex_unlock(&table->m_die_flag);
+				printf(RED "Philosopher %d has died.\n" RESET, i + 1);
+				return (NULL);  // Encerra a thread do observador
+			}
+			i++;
+		}
+	}
+	return (NULL);
+}*/
+
 int	observer(t_table *control)
 {
 	int	i;
@@ -44,11 +68,11 @@ int	observer(t_table *control)
 	i = 0;
 	while (42)
 	{
-		if (should_die_or_not(control, i) != 0)
+		if (should_die_or_not(control, i) != 0)//|| )has_philo_eated_enough(control, i))
 		{
 			pthread_mutex_lock(&control->m_die_flag);
 			control->die_flag = STOP;
-			printf(RED "philo %d is DEAD.\n" RESET, i + 1);
+			printf("%ld philo %d is DEAD\n", get_time(1000), i + 1);
 			pthread_mutex_unlock(&control->m_die_flag);
 			return (DEAD);
 		}
