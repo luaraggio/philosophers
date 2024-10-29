@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 02:22:03 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 02:54:28 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*run_program(void *ptr)
 
 	philo = (t_philo *)ptr;
 	update_last_meal(philo);
-	printf("Philo %d started\n", philo->philo_id);
+	//printf("Philo %d started\n", philo->philo_id);
 	while (42)
 	{
 		if (eat_routine(philo) == STOP)
@@ -29,7 +29,7 @@ void	*run_program(void *ptr)
 			break ;
 
 	}
-	printf("Philo %d stopped\n", philo->philo_id);
+	//printf("Philo %d stopped\n", philo->philo_id);
 	return (NULL);
 }
 
@@ -54,7 +54,7 @@ void	update_last_meal(t_philo *philo) // Atualiza QUANDO começa a comer, não d
 
 t_sim_status	eat_routine(t_philo *philo)
 {
-	if (philo->times_eaten == philo->max_eat)
+	if (*philo->times_eaten == philo->max_eat)
 		return (STOP);
 	if (dinner_config(philo) == STOP)
 		return (STOP);
@@ -91,13 +91,13 @@ int	dinner_config(t_philo *philo)
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
 		}
-		printf("philo %d has taken right fork\n", philo->philo_id);
+		//printf("philo %d has taken right fork\n", philo->philo_id);
 		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
 		}
-		printf("philo %d has taken left fork\n", philo->philo_id);
+		//printf("philo %d has taken left fork\n", philo->philo_id);
 	}
 	else
 	{
@@ -106,13 +106,13 @@ int	dinner_config(t_philo *philo)
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
 		}
-		printf("philo %d has taken left fork\n", philo->philo_id);
+		//printf("philo %d has taken left fork\n", philo->philo_id);
 		while (my_trylock(philo->m_r_fork, philo->r_fork) != 0)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
 		}
-		printf("philo %d has taken right fork\n", philo->philo_id);
+		//printf("philo %d has taken right fork\n", philo->philo_id);
 	}
 	return (CONTINUE);
 }

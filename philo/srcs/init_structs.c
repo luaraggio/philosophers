@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:17 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 01:07:09 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/29 02:44:56 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	init_mutexes(t_table *table)
 	i = -1;
 	while (++i < table->nbr_philos)
 	{
+		if (pthread_mutex_init(&table->m_times_eaten[i], NULL) != 0)
+			return (ERROR);
 		if (pthread_mutex_init(&table->m_philo_last_meal[i], NULL) != 0)
 			return (ERROR);
 		if (pthread_mutex_init(table->m_fork_state, NULL) != 0)
 			return (ERROR);
-		/*if (pthread_mutex_init(&table->philosophers[i]->m_times_eaten, NULL) != 0)
-			return (ERROR);*/
 	}
 	if (pthread_mutex_init(&table->m_die_flag, NULL) != 0)
 		return (ERROR);
@@ -62,9 +62,12 @@ int	init_table(t_table *table, int argc, char **argv)
 	table->threads = my_calloc(sizeof(pthread_t), (table->nbr_philos + 1));
 	table->philosophers = my_calloc(sizeof(struct s_philo *), table->nbr_philos
 			+ 1);
+	table->times_eaten = (int *)my_calloc(sizeof(int), table->nbr_philos + 1);
+	table->m_times_eaten = (pthread_mutex_t *)
+		my_calloc(sizeof(pthread_mutex_t), table->nbr_philos + 1);
 	if (!table->philo_last_meal || !table->fork_state
 		|| !table->m_philo_last_meal || !table->m_fork_state || !table->threads
-		|| !table->philosophers)
+		|| !table->philosophers || !table->times_eaten || !table->m_times_eaten)
 		return (1);
 	init_mutexes(table);
 	while (++i < table->nbr_philos)
@@ -109,7 +112,8 @@ struct s_philo	*create_philo(int id, t_table *table)
 	philo->die_time = table->die_time;
 	philo->die_flag = &table->die_flag;
 	philo->m_die_flag = &table->m_die_flag;
-	philo->times_eaten = 0;
+	philo->times_eaten = table->times_eaten;
+	philo->m_times_eaten = table->m_times_eaten;
 	init_philo_forks(philo, id, table);
 	philo->max_eat = table->max_eat;
 	return (philo);
