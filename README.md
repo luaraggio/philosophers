@@ -14,7 +14,7 @@
 </p>
 <br>
 <p align="center">
-  <img src="https://external-preview.redd.it/EdZBvHGbDaxNlNIB4Ui9KSLMRDM0c9eOMp8hZkc6_s0.jpg?width=640&crop=smart&auto=webp&s=0cf08975cc57702ebb71b979849ce52b901afdc7" alt="Philosopher's dinner" width="500">
+  <img src="https://external-preview.redd.it/EdZBvHGbDaxNlNIB4Ui9KSLMRDM0c9eOMp8hZkc6_s0.jpg?width=640&crop=smart&auto=webp&s=0cf08975cc57702ebb71b979849ce52b901afdc7" alt="Philosopher's dinner" width="400">
 </p>
 <h2 id="overview">Overview</h2>
 <p>
@@ -30,13 +30,6 @@
     <li><strong>time_to_eat</strong>: Time a philosopher spends eating.</li>
     <li><strong>time_to_sleep</strong>: Time a philosopher spends sleeping.</li>
     <li><strong>number_of_times_each_philosopher_must_eat</strong> (optional): If all philosophers have eaten this number of times, the simulation ends.</li>
-
-<h2 id="logs">Logs in Real-Time</h2>
-    <li><strong>timestamp_in_ms X has taken a fork</strong></li>
-    <li><strong>timestamp_in_ms X is eating</strong></li>
-    <li><strong>timestamp_in_ms X is sleeping</strong></li>
-    <li><strong>timestamp_in_ms X is thinking</strong></li>
-    <li><strong>timestamp_in_ms X died</strong></li>
     <h2 id="compilation-and-execution">Compilation and Execution</h2>
 <p>
     To compile the project, navigate to the project directory and run the following command:
