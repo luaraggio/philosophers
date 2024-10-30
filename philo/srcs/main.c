@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:30:22 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 15:33:01 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/30 00:16:11 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,18 @@ that thread has already terminated, pthread_join() returns immediately.
 int	main(int argc, char **argv)
 {
 	t_table	table;
-	//pthread_t observer_thread;
+	pthread_t observer_thread;
 
 	if (check_args(argc, argv))
 		exit(EXIT_FAILURE);
 	if (init_table(&table, argc, argv) != NO_ERROR)
 		return (ERROR);
 	create_philo_threads(&table);
-	/*if (pthread_create(&observer_thread, NULL, (void *)observer, &table) != 0)
+	if (pthread_create(&observer_thread, NULL, observer, &table) != 0)
 			return (perror("Erro ao criar a thread do observador!\n"), ERROR);
-	pthread_detach(observer_thread);*/
-	observer(&table);
+	if (pthread_detach(observer_thread) != 0)
+		return (perror("Erro ao colocar a thread em modo detach!\n"), ERROR);
+	//observer(&table);
 	join_philo_threads(&table);
 	final_clear(&table);
 	return (NO_ERROR);

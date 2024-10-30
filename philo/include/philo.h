@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:21:01 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 02:43:29 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/30 00:18:23 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ typedef enum e_philo_status
 	ALIVE,
 	DEAD,
 }				t_philo_status;
+typedef enum e_philo_status_2
+{
+	DIE,
+	LIVE,
+}				t_philo_status_2;
 
 typedef enum e_ft_status
 {
@@ -61,11 +66,9 @@ typedef struct s_table // control scruct
 	int eat_time;
 	int sleep_time;
 	int max_eat;
-	int	*times_eaten;
 	t_sim_status die_flag;
 	long *philo_last_meal; // to verify if a philo has died
 	int *fork_state;
-	pthread_mutex_t *m_times_eaten;
 	pthread_mutex_t *m_philo_last_meal;
 	pthread_mutex_t *m_fork_state;
 	pthread_mutex_t m_die_flag;
@@ -81,11 +84,10 @@ typedef struct s_philo // philosophers struct
 	int eat_time;
 	int sleep_time;
 	int max_eat;
-	int *times_eaten;
+	int	times_eaten;
 	t_sim_status *die_flag;
 	int *l_fork;
 	int *r_fork;
-	pthread_mutex_t *m_times_eaten;
 	pthread_mutex_t *m_last_meal;
 	pthread_mutex_t *m_l_fork;
 	pthread_mutex_t *m_r_fork;
@@ -138,8 +140,8 @@ void			print_error(char *str);
 // ---------------- Status ---------------------
 t_sim_status	check_simulation_status(t_philo *philo);
 int				should_die_or_not(t_table *control, int i);
-//void			*observer(void *arg);
- int				observer(t_table *control);
+void			*observer(void *arg);
+ //int				observer(t_table *control);
 // ---------------- Time -----------------------
 int my_usleep(t_philo *philo, long time);
 long			get_current_time(t_time_precision precision);

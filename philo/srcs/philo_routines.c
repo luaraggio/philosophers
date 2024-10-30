@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/29 16:02:50 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/10/30 00:08:24 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,14 @@ void	update_last_meal(t_philo *philo) // Atualiza QUANDO começa a comer, não d
 
 t_sim_status	eat_routine(t_philo *philo)
 {
-	if (*philo->times_eaten == philo->max_eat)
+	if (philo->times_eaten == philo->max_eat)
 		return (STOP);
 	if (dinner_config(philo) == STOP)
 		return (STOP);
 	update_last_meal(philo);
 	printf(GREEN "%ld philo %d is eating\n" RESET, get_current_time(1000),
 		philo->philo_id);
-	pthread_mutex_lock(philo->m_times_eaten);
 	philo->times_eaten++;
-	pthread_mutex_unlock(philo->m_times_eaten);
 	return_forks(philo);
 	my_usleep(philo, philo->eat_time);
 	return (CONTINUE);
