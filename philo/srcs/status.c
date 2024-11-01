@@ -10,33 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <sys/_pthread/_pthread_mutex_t.h>
 #include "../include/philo.h"
 
 t_sim_status	check_simulation_status(t_philo *philo)
 {
+	t_sim_status return_value;
+
 	pthread_mutex_lock(philo->m_die_flag);
-	if (*philo->die_flag == STOP)
-	{
-		pthread_mutex_unlock(philo->m_die_flag);
-		return (STOP);
-	}
+	return_value = *philo->die_flag;
 	pthread_mutex_unlock(philo->m_die_flag);
-	return (CONTINUE);
+	return (return_value);
 }
 
 t_sim_status should_die_or_not(t_table *control, int i)
 {
+	t_sim_status value;
+	
 	pthread_mutex_lock(&control->m_philo_last_meal[i]);
-	if (control->philo_last_meal[i] != 0 && (get_current_time(MICRO)
-			- control->philo_last_meal[i]) > control->die_time)
-	{
-		pthread_mutex_unlock(&control->m_philo_last_meal[i]);
-		return (STOP);
-	}
+	value = (control->philo_last_meal[i] != 0 && (get_current_time(MICRO)
+			- control->philo_last_meal[i]) > control->die_time);
 	pthread_mutex_unlock(&control->m_philo_last_meal[i]);
-	return (CONTINUE);
+	return (value);
 }
 
 void	change_simulation_status(pthread_mutex_t *lock,  t_sim_status *target_status, t_sim_status new_status) {
@@ -45,6 +39,16 @@ void	change_simulation_status(pthread_mutex_t *lock,  t_sim_status *target_statu
 	*target_status = new_status;
 	pthread_mutex_unlock(lock);
 	return ;
+}
+
+t_sim_status	check_observer_status(t_table *table)
+{
+	t_sim_status observer_status;
+
+	pthread_mutex_lock(&table->m_observer_status);
+	observer_status = table->observer_status;	
+	pthread_mutex_unlock(&table->m_observer_status);
+	return (observer_status);
 }
 
 void	*observer(void *ptr)
@@ -57,10 +61,12 @@ void	*observer(void *ptr)
 	while (42)
 	{
 
+		if (check_observer_status(control) == STOP)
+			return (NULL);
 		if (should_die_or_not(control, i) == STOP)
 		{
 			change_simulation_status(&control->m_die_flag, &control->die_flag, STOP);
-			printf("%ld philo %d is DEAD\n", get_current_time(MILI), i + 1);
+			printf(RED"%ld philo %d is DEAD\n"RESET, get_current_time(MILI), i + 1);
 			return (NULL);
 		}
 		i++;

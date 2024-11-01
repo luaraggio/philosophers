@@ -63,11 +63,13 @@ typedef struct s_table  // control scruct
     t_sim_status die_flag;
     long *philo_last_meal;  // to verify if a philo has died
     int *fork_state;
+    t_sim_status observer_status;
     pthread_mutex_t *m_philo_last_meal;
     pthread_mutex_t *m_fork_state;
     pthread_mutex_t m_die_flag;
     pthread_t *threads;
     struct s_philo **philosophers;
+    pthread_mutex_t m_observer_status;
 } t_table;
 
 typedef struct s_philo  // philosophers struct
@@ -114,6 +116,7 @@ void *my_calloc(size_t nmemb, size_t size);
 // ---------------- Main -----------------------
 void create_philo_threads(t_table *table);
 void join_philo_threads(t_table *table);
+void stop_observer(pthread_mutex_t *lock, t_sim_status *status);
 
 // ---------------- Mutex ----------------------
 int my_trylock(pthread_mutex_t *m_fork_state, int *fork_state);
@@ -123,7 +126,7 @@ void *run_program(void *ptr);
 t_sim_status eat_routine(t_philo *philo);
 int sleep_routine(t_philo *philo);
 int think_routine(t_philo *philo);
-int try_to_take_forks(t_philo *philo);
+t_sim_status try_to_take_forks(t_philo *philo);
 void update_last_meal(t_philo *philo);
 
 // ---------------- Print Messages -------------

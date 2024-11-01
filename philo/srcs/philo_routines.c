@@ -21,20 +21,16 @@ void	*run_program(void *ptr)
 	//printf("Philo %d started\n", philo->philo_id);
 	while (42)
 	{
-		if (think_routine(philo) == STOP)
+		if (think_routine(philo) == STOP
+			|| eat_routine(philo) == STOP
+			|| sleep_routine(philo) == STOP)
 			break ;
-		if (eat_routine(philo) == STOP)
-			break ;
-		if (sleep_routine(philo) == STOP)
-			break ;
-
 	}
 	//printf("Philo %d stopped\n", philo->philo_id);
 	return (NULL);
 }
 
-void	return_forks(t_philo *philo)
-{
+void	return_forks(t_philo *philo) {
 	if (philo->philo_id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->m_r_fork);
@@ -80,12 +76,12 @@ t_sim_status	eat_routine(t_philo *philo)
 	if (my_usleep(philo, philo->eat_time) == STOP)
 		return (STOP);
 	philo->times_eaten++;
+	return_forks(philo);
 	if (philo->times_eaten == philo->max_eat)
 	{
 		set_last_meal(philo, 0);
 		return (STOP);
 	}
-	return_forks(philo);
 	return (CONTINUE);
 }
 
@@ -93,19 +89,17 @@ int	sleep_routine(t_philo *philo)
 {
 	printf(BLUE "%ld philo %d is sleeping\n" RESET, get_current_time(MILI),
 		philo->philo_id);
-	return my_usleep(philo, philo->sleep_time);
+	return (my_usleep(philo, philo->sleep_time));
 }
 
 int	think_routine(t_philo *philo)
 {
 	printf(YELLOW "%ld philo %d is thinking\n" RESET, get_current_time(MILI),
 		philo->philo_id);
-	if (try_to_take_forks(philo) == STOP)
-		return (STOP);
-	return (CONTINUE);
+	return (try_to_take_forks(philo));
 }
 
-int	try_to_take_forks(t_philo *philo)
+t_sim_status try_to_take_forks(t_philo *philo)
 {
 	if (philo->philo_id % 2 == 0)
 	{
@@ -113,12 +107,14 @@ int	try_to_take_forks(t_philo *philo)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
+			usleep(100);
 		}
 		printf("philo %d has taken a fork\n", philo->philo_id);
 		while (my_trylock(philo->m_l_fork, philo->l_fork) != 0)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
+			usleep(100);
 		}
 		printf("philo %d has taken a fork\n", philo->philo_id);
 	}
@@ -128,12 +124,14 @@ int	try_to_take_forks(t_philo *philo)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
+			usleep(100);
 		}
 		printf("philo %d has taken a fork\n", philo->philo_id);
 		while (my_trylock(philo->m_r_fork, philo->r_fork) != 0)
 		{
 			if (check_simulation_status(philo) == STOP)
 				return (STOP);
+			usleep(100);
 		}
 		printf("philo %d has taken a fork\n", philo->philo_id);
 	}

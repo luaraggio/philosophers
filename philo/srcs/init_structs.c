@@ -29,9 +29,13 @@ int init_mutexes(t_table *table)
     {
         if (pthread_mutex_init(&table->m_philo_last_meal[i], NULL) != 0)
             return (ERROR);
-        if (pthread_mutex_init(table->m_fork_state, NULL) != 0) return (ERROR);
+        if (pthread_mutex_init(table->m_fork_state, NULL) != 0)
+            return (ERROR);
     }
-    if (pthread_mutex_init(&table->m_die_flag, NULL) != 0) return (ERROR);
+    if (pthread_mutex_init(&table->m_die_flag, NULL) != 0)
+        return (ERROR);
+    if (pthread_mutex_init(&table->m_observer_status, NULL) != 0)
+        return (ERROR);
     return (NO_ERROR);
 }
 
@@ -68,6 +72,7 @@ int init_table(t_table *table, int argc, char **argv)
         if (!table->philosophers[i]) return (1);
     }
     table->die_flag = CONTINUE;
+    table->observer_status = CONTINUE;
     return (0);
 }
 
