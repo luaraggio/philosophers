@@ -27,7 +27,7 @@ t_sim_status should_die_or_not(t_table *control, int i)
 	t_sim_status value;
 	
 	pthread_mutex_lock(&control->m_philo_last_meal[i]);
-	value = (control->philo_last_meal[i] != 0 && (get_current_time(MICRO)
+	value = (control->philo_last_meal[i] != 0 && (get_current_time(MILI)
 			- control->philo_last_meal[i]) > control->die_time);
 	pthread_mutex_unlock(&control->m_philo_last_meal[i]);
 	return (value);

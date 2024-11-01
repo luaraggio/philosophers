@@ -18,7 +18,6 @@ void	*run_program(void *ptr)
 
 	philo = (t_philo *)ptr;
 	update_last_meal(philo);
-	//printf("Philo %d started\n", philo->philo_id);
 	while (42)
 	{
 		if (think_routine(philo) == STOP
@@ -26,7 +25,6 @@ void	*run_program(void *ptr)
 			|| sleep_routine(philo) == STOP)
 			break ;
 	}
-	//printf("Philo %d stopped\n", philo->philo_id);
 	return (NULL);
 }
 
@@ -55,7 +53,7 @@ void	return_forks(t_philo *philo) {
 void	update_last_meal(t_philo *philo) // Atualiza QUANDO começa a comer, não depois que comeu
 {
 	pthread_mutex_lock(philo->m_last_meal);
-	*philo->last_meal = get_current_time(MICRO);
+	*philo->last_meal = get_current_time(MILI);
 	pthread_mutex_unlock(philo->m_last_meal);
 	return ;
 }
@@ -71,9 +69,9 @@ void	set_last_meal(t_philo *philo, long time)
 t_sim_status	eat_routine(t_philo *philo)
 {
 	update_last_meal(philo);
-	printf(GREEN "%ld philo %d is eating\n" RESET, get_current_time(MILI),
+	printf(GREEN"%ld philo %d is eating\n"RESET, get_current_time(MILI),
 		philo->philo_id);
-	if (my_usleep(philo, philo->eat_time) == STOP)
+	if (my_usleep(philo, philo->eat_time * 1e3) == STOP)
 		return (STOP);
 	philo->times_eaten++;
 	return_forks(philo);
@@ -87,14 +85,14 @@ t_sim_status	eat_routine(t_philo *philo)
 
 int	sleep_routine(t_philo *philo)
 {
-	printf(BLUE "%ld philo %d is sleeping\n" RESET, get_current_time(MILI),
+	printf("%ld philo %d is sleeping\n", get_current_time(MILI),
 		philo->philo_id);
-	return (my_usleep(philo, philo->sleep_time));
+	return (my_usleep(philo, philo->sleep_time * 1e3));
 }
 
 int	think_routine(t_philo *philo)
 {
-	printf(YELLOW "%ld philo %d is thinking\n" RESET, get_current_time(MILI),
+	printf("%ld philo %d is thinking\n", get_current_time(MILI),
 		philo->philo_id);
 	return (try_to_take_forks(philo));
 }

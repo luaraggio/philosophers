@@ -45,9 +45,9 @@ int init_table(t_table *table, int argc, char **argv)
 
     i = -1;
     table->nbr_philos = my_atol(argv[1]);
-    table->die_time = my_atol(argv[2]) * 1e3;
-    table->eat_time = my_atol(argv[3]) * 1e3;
-    table->sleep_time = my_atol(argv[4]) * 1e3;
+    table->die_time = my_atol(argv[2]);
+    table->eat_time = my_atol(argv[3]);
+    table->sleep_time = my_atol(argv[4]);
     if (argc == 6)
         table->max_eat = my_atol(argv[5]);
     else

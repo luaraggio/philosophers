@@ -1,6 +1,6 @@
 NAME = philos
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -lpthread
+CFLAGS = -Wall -Wextra -Werror -lpthread
 
 # Colors
 RESET=\033[0m
