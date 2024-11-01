@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
+#include <sys/_pthread/_pthread_mutex_t.h>
 #include "../include/philo.h"
 
 t_sim_status	check_simulation_status(t_philo *philo)
@@ -24,130 +26,46 @@ t_sim_status	check_simulation_status(t_philo *philo)
 	return (CONTINUE);
 }
 
-int	should_die_or_not(t_table *control, int i)
+t_sim_status should_die_or_not(t_table *control, int i)
 {
 	pthread_mutex_lock(&control->m_philo_last_meal[i]);
-	if (control->philo_last_meal[i] != -1 && (get_current_time(MICRO)
-			- control->philo_last_meal[i]) >= control->die_time)
+	if (control->philo_last_meal[i] != 0 && (get_current_time(MICRO)
+			- control->philo_last_meal[i]) > control->die_time)
 	{
 		pthread_mutex_unlock(&control->m_philo_last_meal[i]);
-		return (1);
+		return (STOP);
 	}
 	pthread_mutex_unlock(&control->m_philo_last_meal[i]);
-	return (0);
+	return (CONTINUE);
 }
 
-/*void	*observer(void *arg)
-{
-	t_table	*table;
-	int		i;
+void	change_simulation_status(pthread_mutex_t *lock,  t_sim_status *target_status, t_sim_status new_status) {
 
-	i = 0;
-
-	table = (t_table *)arg;
-	while (42)
-	{
-		i = 0;
-		while (i < table->nbr_philos)
-		{
-			if (should_die_or_not(table, i))
-			{
-				pthread_mutex_lock(&table->m_die_flag);
-				table->die_flag = STOP;
-				pthread_mutex_unlock(&table->m_die_flag);
-				printf(RED "Philosopher %d has died.\n" RESET, i + 1);
-				return (NULL);  // Encerra a thread do observador
-			}
-			i++;
-		}
-	}
-	return (NULL);
-}*/
-
-int	is_philo_full(t_table *control)
-{
-	int	i;
-
-	i = 0;
-	if (!control->max_eat)
-		return (1);
-	while (i < control->nbr_philos)
-	{
-		pthread_mutex_lock(&control->m_times_eaten[i]);
-		if (control->times_eaten[i] < control->max_eat)
-		{
-			pthread_mutex_unlock(&control->m_times_eaten[i]);
-			return (0);
-		}
-		pthread_mutex_unlock(&control->m_times_eaten[i]);
-		i++;
-	}
-	return (1);
+	pthread_mutex_lock(lock);
+	*target_status = new_status;
+	pthread_mutex_unlock(lock);
+	return ;
 }
 
-int	observer(t_table *control)
+void	*observer(void *ptr)
 {
-	int	i;
-	int	all_full;
-
-	i = 0;
-	all_full = 0;
-	while (42)
-	{
-		while (i < control->nbr_philos)
-		{
-			if (should_die_or_not(control, i) != 0)
-			{
-				pthread_mutex_lock(&control->m_die_flag);
-				control->die_flag = STOP;
-				printf("%ld philo %d is DEAD\n", get_current_time(1000), i + 1);
-				pthread_mutex_unlock(&control->m_die_flag);
-				return (DEAD);
-			}
-			i++;
-		}
-		all_full = 1;
-		i = 0;
-		while (i < control->nbr_philos)
-		{
-			pthread_mutex_lock(&control->m_times_eaten[i]);
-			if (control->times_eaten[i] < control->max_eat)
-				all_full = 0;
-			pthread_mutex_unlock(&control->m_times_eaten[i]);
-			i++;
-		}
-		if (all_full)
-		{
-			pthread_mutex_lock(&control->m_die_flag);
-			control->die_flag = STOP;
-			printf("All philosophers are full.\n");
-			pthread_mutex_unlock(&control->m_die_flag);
-			return (STOP);
-		}
-	}
-	return (ALIVE);
-}
-
-/*int	observer(t_table *control)
-{
+	t_table *control;
 	int	i;
 
+	control = (t_table *)ptr;
 	i = 0;
 	while (42)
 	{
 
-		if (should_die_or_not(control, i) != 0 || is_philo_full(control) != 0)
+		if (should_die_or_not(control, i) == STOP)
 		{
-			pthread_mutex_lock(&control->m_die_flag);
-			control->die_flag = STOP;
-			printf("%ld philo %d is DEAD\n", get_current_time(1000), i + 1);
-			pthread_mutex_unlock(&control->m_die_flag);
-			return (DEAD);
+			change_simulation_status(&control->m_die_flag, &control->die_flag, STOP);
+			printf("%ld philo %d is DEAD\n", get_current_time(MILI), i + 1);
+			return (NULL);
 		}
 		i++;
 		if (i == control->nbr_philos)
 			i = 0;
-		return (ALIVE);
 	}
-	return (ALIVE);
-}*/
+	return (NULL);
+}
