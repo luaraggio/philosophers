@@ -6,28 +6,28 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:15 by lraggio           #+#    #+#             */
-/*   Updated: 2024/10/22 16:04:53 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 01:33:01 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
 /*
-*	Essa primeira parte lida com a leitura e interpretação do input, ao veri-
-* ficar se os argumentos passados são válidos.
-*
-* number_of_philosophers: Número de filósofos e garfos.
-*
-* time_to_die: Tempo em milissegundos que um filósofo pode ficar sem comer
-* antes de morrer.
-*
-* time_to_eat: Tempo que um filósofo leva para comer.
-*
-* time_to_sleep: Tempo que um filósofo passa dormindo.
-*
-* number_of_times_each_philosopher_must_eat (input opcional): Número de vezes
-* que cada filósofo precisa comer antes da simulação parar.
-*/
+ *	Essa primeira parte lida com a leitura e interpretação do input, ao veri-
+ * ficar se os argumentos passados são válidos.
+ *
+ * number_of_philosophers: Número de filósofos e garfos.
+ *
+ * time_to_die: Tempo em milissegundos que um filósofo pode ficar sem comer
+ * antes de morrer.
+ *
+ * time_to_eat: Tempo que um filósofo leva para comer.
+ *
+ * time_to_sleep: Tempo que um filósofo passa dormindo.
+ *
+ * number_of_times_each_philosopher_must_eat (input opcional): Número de vezes
+ * que cada filósofo precisa comer antes da simulação parar.
+ */
 
 int	is_digit(int c)
 {
@@ -43,8 +43,8 @@ int	is_in_range(char **argv)
 	{
 		if (my_atol(argv[j]) > INT_MAX || argv[j] <= 0)
 		{
-			fprintf(stderr,"Error: The input must be in the range: positives,");
-			fprintf(stderr,"non-zero and less than MAX_INT numbers\n");
+			printf("Error: The input must be in the range: positives, \
+			non-zero and less than MAX_INT numbers\n");
 			return (1);
 		}
 		j++;
@@ -78,11 +78,11 @@ int	check_args(int argc, char **argv)
 {
 	if (!(argc == 5 || argc == 6))
 	{
-		fprintf(stderr, "Invalid arguments.\nIt must be: ./philos  [nbr_of_philos]  [time_to_die]");
-		fprintf(stderr, "[time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
-		return (1);
+			printf("Invalid arguments.\nIt must be: ./philos  [nbr_of_philos] \
+			[time_to_die]  [time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
+		return (ERROR);
 	}
 	if (is_nbr(argv) || is_in_range(argv))
-		return (1);
-	return (0);
+		return (ERROR);
+	return (NO_ERROR);
 }

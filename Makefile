@@ -18,6 +18,8 @@ SRCS =	./philo/srcs/main.c \
 		./philo/srcs/philo_routines.c \
 		./philo/srcs/time.c \
 		./philo/srcs/status.c \
+		./philo/srcs/clean.c \
+		./philo/srcs/dinner.c
 
 OBJS = ${SRCS:.c=.o}
 

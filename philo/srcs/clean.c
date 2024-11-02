@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 18:29:55 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:46:04 by lraggio          ###   ########.fr       */
+/*   Created: 2024/11/02 01:35:03 by lraggio           #+#    #+#             */
+/*   Updated: 2024/11/02 01:35:25 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-long	get_current_time(t_time_precision precision)
+void	final_clear(t_table *table)
 {
-	struct timeval	time;
+	int	i;
 
-	gettimeofday(&time, NULL);
-	return (((time.tv_sec * 1e6) + time.tv_usec) / precision);
-}
-
-int	my_usleep(t_philo *philo, long time)
-{
-	long	end;
-
-	end = get_current_time(MICRO) + time;
-	while (end > get_current_time(MICRO))
+	destroy_mutexes(table);
+	i = 0;
+	while (i < table->nbr_philos)
 	{
-		usleep(100);
-		if (check_simulation_status(philo) == STOP)
-			return (STOP);
+		free(table->philosophers[i]);
+		i++;
 	}
-	return (CONTINUE);
+	free(table->philosophers);
+	free(table->philo_last_meal);
+	free(table->m_fork_state);
+	free(table->m_philo_last_meal);
+	free(table->fork_state);
+	free(table->threads);
 }
