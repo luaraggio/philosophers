@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:55:37 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:46:13 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:05:03 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*observer(void *ptr)
 		{
 			change_simulation_status(&control->m_die_flag, &control->die_flag,
 				STOP);
-			printf(RED "%ld philo %d is DEAD\n" RESET, get_current_time(MILI), i
+			printf(RED "%ld %d died\n" RESET, get_current_time(MILI), i
 				+ 1);
 			return (NULL);
 		}

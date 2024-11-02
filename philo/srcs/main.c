@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:30:22 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:54:15 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:07:51 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ int	main(int argc, char **argv)
 		return (perror("Erro ao criar a thread do observador!\n"), ERROR);
 	create_philo_threads(&table);
 	join_philo_threads(&table);
-	// para o observador e espera ele retornar antes de dar free em tudo
 	stop_observer(&table.m_observer_status, &table.observer_status);
 	pthread_join(observer_thread, NULL);
 	final_clear(&table);
 	return (NO_ERROR);
 }
+
+// para o observador e espera ele retornar antes de dar free em tudo
 
 void	stop_observer(pthread_mutex_t *lock, t_sim_status *status)
 {

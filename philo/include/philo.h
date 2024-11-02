@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:21:01 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:58:19 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:24:24 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,38 @@ typedef enum e_time_precision
 
 typedef struct s_table // control scruct
 {
-	int nbr_philos;
-	int die_time;
-	int eat_time;
-	int sleep_time;
-	int max_eat;
-	t_sim_status die_flag;
-	long *philo_last_meal; // to verify if a philo has died
-	int *fork_state;
-	t_sim_status observer_status;
-	pthread_mutex_t *m_philo_last_meal;
-	pthread_mutex_t *m_fork_state;
-	pthread_mutex_t m_die_flag;
-	pthread_t *threads;
-	struct s_philo **philosophers;
-	pthread_mutex_t m_observer_status;
+	int				nbr_philos;
+	int				die_time;
+	int				eat_time;
+	int				sleep_time;
+	int				max_eat;
+	int				*fork_state;
+	t_sim_status	die_flag;
+	long			*philo_last_meal; // to verify if a philo has died
+	t_sim_status	observer_status;
+	pthread_mutex_t	*m_philo_last_meal;
+	pthread_mutex_t	*m_fork_state;
+	pthread_mutex_t	m_die_flag;
+	pthread_t		*threads;
+	struct s_philo	**philosophers;
+	pthread_mutex_t	m_observer_status;
 }				t_table;
 
 typedef struct s_philo // philosophers struct
 {
-	int philo_id;
-	long *last_meal;
-	int eat_time;
-	int sleep_time;
-	int max_eat;
-	int times_eaten;
-	t_sim_status *die_flag;
-	int *l_fork;
-	int *r_fork;
-	pthread_mutex_t *m_last_meal;
-	pthread_mutex_t *m_l_fork;
-	pthread_mutex_t *m_r_fork;
-	pthread_mutex_t *m_die_flag;
+	int				philo_id;
+	int				eat_time;
+	int				sleep_time;
+	int				max_eat;
+	int				times_eaten;
+	long			*last_meal;
+	int				*l_fork;
+	int				*r_fork;
+	t_sim_status	*die_flag;
+	pthread_mutex_t	*m_last_meal;
+	pthread_mutex_t	*m_l_fork;
+	pthread_mutex_t	*m_r_fork;
+	pthread_mutex_t	*m_die_flag;
 }				t_philo;
 
 // --------------- Check Input -----------------
@@ -102,6 +102,7 @@ void			final_clear(t_table *table);
 int				init_table(t_table *table, int argc, char **argv);
 void			init_philo_forks(t_philo *philo, int id, t_table *table);
 struct s_philo	*create_philo(int id, t_table *table);
+int				allocate_resources(t_table *table);
 
 // --------------- Libft Utils -----------------
 int				my_atoi(char *str);

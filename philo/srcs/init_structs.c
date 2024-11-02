@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:17 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:53:20 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:26:33 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,22 @@ int	init_table(t_table *table, int argc, char **argv)
 		table->max_eat = my_atol(argv[5]);
 	else
 		table->max_eat = -1;
+	if (allocate_resources(table) == ERROR)
+		return (ERROR);
+	init_mutexes(table);
+	while (++i < table->nbr_philos)
+	{
+		table->philosophers[i] = create_philo(i + 1, table);
+		if (!table->philosophers[i])
+			return (ERROR);
+	}
+	table->die_flag = CONTINUE;
+	table->observer_status = CONTINUE;
+	return (NO_ERROR);
+}
+
+int	allocate_resources(t_table *table)
+{
 	table->philo_last_meal = my_calloc(sizeof(long), (table->nbr_philos + 1));
 	table->fork_state = my_calloc(sizeof(int), (table->nbr_philos + 1));
 	table->m_philo_last_meal = my_calloc(sizeof(pthread_mutex_t),
@@ -38,15 +54,6 @@ int	init_table(t_table *table, int argc, char **argv)
 		|| !table->m_philo_last_meal || !table->m_fork_state || !table->threads
 		|| !table->philosophers)
 		return (ERROR);
-	init_mutexes(table);
-	while (++i < table->nbr_philos)
-	{
-		table->philosophers[i] = create_philo(i + 1, table);
-		if (!table->philosophers[i])
-			return (ERROR);
-	}
-	table->die_flag = CONTINUE;
-	table->observer_status = CONTINUE;
 	return (NO_ERROR);
 }
 

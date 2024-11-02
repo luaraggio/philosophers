@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:10:46 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:48:40 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:06:21 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*run_program(void *ptr)
 t_sim_status	eat_routine(t_philo *philo)
 {
 	update_last_meal(philo);
-	printf(GREEN "%ld philo %d is eating\n" RESET, get_current_time(MILI),
+	printf(GREEN "%ld %d is eating\n" RESET, get_current_time(MILI),
 		philo->philo_id);
 	if (my_usleep(philo, philo->eat_time * 1e3) == STOP)
 		return (STOP);
@@ -69,14 +69,14 @@ void	return_forks(t_philo *philo)
 
 int	sleep_routine(t_philo *philo)
 {
-	printf("%ld philo %d is sleeping\n", get_current_time(MILI),
+	printf(BLUE"%ld %d is sleeping\n"RESET, get_current_time(MILI),
 		philo->philo_id);
 	return (my_usleep(philo, philo->sleep_time * 1e3));
 }
 
 int	think_routine(t_philo *philo)
 {
-	printf("%ld philo %d is thinking\n", get_current_time(MILI),
+	printf(YELLOW"%ld %d is thinking\n"RESET, get_current_time(MILI),
 		philo->philo_id);
 	return (try_to_take_forks(philo));
 }

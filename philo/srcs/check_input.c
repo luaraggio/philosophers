@@ -6,7 +6,7 @@
 /*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 02:17:15 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 01:33:01 by lraggio          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:07:18 by lraggio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	check_args(int argc, char **argv)
 {
 	if (!(argc == 5 || argc == 6))
 	{
-			printf("Invalid arguments.\nIt must be: ./philos  [nbr_of_philos] \
-			[time_to_die]  [time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
+		printf("Invalid arguments.\nIt must be: ./philos  [nbr_of_philos] \
+		[time_to_die]  [time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
 		return (ERROR);
 	}
 	if (is_nbr(argv) || is_in_range(argv))
