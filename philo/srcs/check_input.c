@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_input.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 02:17:15 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 02:07:18 by lraggio          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/philo.h"
 
@@ -41,7 +30,7 @@ int	is_in_range(char **argv)
 	j = 1;
 	while (argv[j])
 	{
-		if (my_atol(argv[j]) > INT_MAX || argv[j] <= 0)
+		if (my_atol(argv[j]) > INT_MAX || my_atol(argv[j]) <= 0)
 		{
 			printf("Error: The input must be in the range: positives, \
 			non-zero and less than MAX_INT numbers\n");

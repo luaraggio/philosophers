@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lraggio <lraggio@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 02:30:22 by lraggio           #+#    #+#             */
-/*   Updated: 2024/11/02 02:07:51 by lraggio          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/philo.h"
 #include <pthread.h>
@@ -56,7 +45,7 @@ int	main(int argc, char **argv)
 	if (init_table(&table, argc, argv) != NO_ERROR)
 		return (ERROR);
 	if (pthread_create(&observer_thread, NULL, observer, &table) != 0)
-		return (perror("Erro ao criar a thread do observador!\n"), ERROR);
+		return (perror("Error: create observer thread.\n"), ERROR);
 	create_philo_threads(&table);
 	join_philo_threads(&table);
 	stop_observer(&table.m_observer_status, &table.observer_status);
