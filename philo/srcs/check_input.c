@@ -31,11 +31,7 @@ int	is_in_range(char **argv)
 	while (argv[j])
 	{
 		if (my_atol(argv[j]) > INT_MAX || my_atol(argv[j]) <= 0)
-		{
-			printf("Error: The input must be in the range: positives, \
-			non-zero and less than MAX_INT numbers\n");
 			return (1);
-		}
 		j++;
 	}
 	return (0);
@@ -67,8 +63,7 @@ int	check_args(int argc, char **argv)
 {
 	if (!(argc == 5 || argc == 6))
 	{
-		printf("Invalid arguments.\nIt must be: ./philos  [nbr_of_philos] \
-		[time_to_die]  [time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
+		printf("Invalid arguments.\nIt must be: ./philos  [nbr_of_philos]  [time_to_die]  [time_to_eat]  [time_to_sleep]  [nbr_of_meals]\n");
 		return (ERROR);
 	}
 	if (is_nbr(argv) || is_in_range(argv))
